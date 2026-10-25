@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-LKPD Bilangan Bulat</title>
+<style>
+:root{--green:#167d62;--green2:#21a17d;--blue:#176b87;--ink:#173b43;--muted:#5d7479;--paper:#fff;--bg:#eef8f5;--line:#d8eae5;--orange:#ffbf69}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#e8f7ef,#eaf5fb);line-height:1.55}
+header{padding:28px 18px 46px;background:linear-gradient(120deg,#116b55,#167d8d);color:#fff;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;width:230px;height:230px;border:35px solid #ffffff18;border-radius:50%;right:-55px;top:-95px}
+.hero{max-width:980px;margin:auto;position:relative;z-index:1}.tag{display:inline-block;padding:5px 12px;border:1px solid #ffffff75;border-radius:99px;font-size:.82rem;letter-spacing:.04em}
+h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.08;margin:16px 0 10px}.hero p{max-width:680px;margin:0;color:#e5f8f2}
+.wrap{max-width:980px;margin:-22px auto 50px;padding:0 16px;position:relative}.card{background:var(--paper);border:1px solid #dcece7;border-radius:20px;padding:clamp(18px,3vw,28px);margin-bottom:18px;box-shadow:0 12px 30px #1c65530d}
+h2{margin:0 0 12px;font-size:1.35rem}h3{margin:0 0 8px;font-size:1.05rem}.muted{color:var(--muted)}.student-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label.field{display:block;font-size:.9rem;font-weight:650}.field input{width:100%;margin-top:5px;padding:12px;border:1px solid #c9ded8;border-radius:10px;font:inherit}
+.progress-top{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:.9rem}.progress{height:9px;background:#e5f0ed;border-radius:20px;overflow:hidden;margin-top:8px}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--green2),#48b9d3);transition:width .25s}
+.question{border:1px solid var(--line);border-radius:15px;padding:16px;margin:14px 0}.qtitle{font-weight:700;margin-bottom:10px}.choices{display:grid;gap:8px}.choice{display:flex;align-items:flex-start;gap:10px;border:1px solid #d8e8e3;border-radius:11px;padding:10px 12px;cursor:pointer;transition:.15s}.choice:hover{border-color:var(--green2);background:#f4fbf8}.choice input{margin-top:5px;accent-color:var(--green)}.choice.correct{background:#e9f8ef;border-color:#36a66a}.choice.wrong{background:#fff0ed;border-color:#dc7765}
+textarea{width:100%;min-height:82px;border:1px solid #c9ded8;border-radius:10px;padding:12px;font:inherit;resize:vertical}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+button{border:0;border-radius:11px;padding:12px 17px;font:inherit;font-weight:700;cursor:pointer}.primary{background:var(--green);color:white}.secondary{background:#e7f3ef;color:#145d4a}.outline{background:#fff;border:1px solid var(--line);color:var(--ink)}button:hover{filter:brightness(.97);transform:translateY(-1px)}
+.feedback{margin-top:10px;font-size:.92rem;font-weight:650}.result{display:none;background:#f1fbf7;border:1px solid #bfe6d5;border-radius:15px;padding:18px;margin-top:16px}.score{font-size:2rem;font-weight:800;color:var(--green)}.answer-key{display:none}.answer-key.show{display:block}.keyrow{padding:10px 0;border-bottom:1px solid var(--line)}.keyrow:last-child{border-bottom:0}
+footer{text-align:center;color:var(--muted);padding:5px 15px 30px;font-size:.9rem}.small{font-size:.88rem}
+@media(max-width:600px){.student-grid{grid-template-columns:1fr}.progress-top{align-items:flex-start;flex-direction:column}.card{border-radius:16px}}
+@media print{body{background:white}header{padding:18px;background:#167d62!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.wrap{margin:10px auto}.card{box-shadow:none;break-inside:avoid}.actions{display:none}.answer-key{display:block!important}.result{display:block!important}}
+</style>
+</head>
+<body>
+<header><div class="hero">
+<span class="tag">LEMBAR KERJA PESERTA DIDIK DIGITAL</span>
+<h1>Bilangan Bulat</h1>
+<p>Belajar mengenali bilangan bulat, membandingkan urutannya, dan menyelesaikan soal cerita. Kerjakan dengan teliti dan periksa kembali jawabanmu!</p>
+</div></header>
+<main class="wrap">
+<section class="card">
+<h2>👋 Identitas Peserta Didik</h2>
+<div class="student-grid">
+<label class="field">Nama lengkap<input id="nama" type="text" placeholder="Tuliskan nama kamu"></label>
+<label class="field">Kelas<input id="kelas" type="text" placeholder="Contoh: VII A"></label>
+</div>
+</section>
+<section class="card">
+<div class="progress-top"><div><h2>📘 Bagian A — Pilihan Ganda</h2><span class="muted small">Pilih satu jawaban yang paling tepat.</span></div><strong id="progressText">0 dari 10 dijawab</strong></div>
+<div class="progress"><div class="bar" id="progressBar"></div></div>
+<div id="mcq"></div>
+</section>
+<section class="card">
+<h2>✏️ Bagian B — Soal Cerita</h2>
+<p class="muted">Tuliskan cara pengerjaan dan jawabanmu. Gunakan tanda positif (+) dan negatif (−) jika diperlukan.</p>
+<div id="stories"></div>
+</section>
+<section class="card">
+<h2>🏁 Periksa Hasil Pekerjaan</h2>
+<p class="muted">Tekan tombol untuk memeriksa pilihan ganda. Jawaban soal cerita dapat kamu bandingkan dengan kunci jawaban.</p>
+<div class="actions">
+<button class="primary" onclick="checkAnswers()">Periksa Jawaban</button>
+<button class="secondary" onclick="toggleKey()">Lihat Kunci Jawaban</button>
+<button class="outline" onclick="window.print()">Cetak / Simpan PDF</button>
+<button class="outline" onclick="resetApp()">Ulangi dari Awal</button>
+</div>
+<div class="result" id="result" aria-live="polite"></div>
+<div class="answer-key" id="answerKey">
+<h3 style="margin-top:18px">Kunci Jawaban</h3>
+<div class="keyrow"><b>Pilihan ganda:</b> 1. B · 2. C · 3. C · 4. A · 5. A</div>
+<div class="keyrow"><b>Soal cerita 1:</b> −3 + 5 = 2°C</div>
+<div class="keyrow"><b>Soal cerita 2:</b> 10 − 4 = 6 kelereng</div>
+<div class="keyrow"><b>Soal cerita 3:</b> −8 + 3 = −5 meter</div>
+<div class="keyrow"><b>Soal cerita 4:</b> 2 − 6 = −4°C</div>
+<div class="keyrow"><b>Soal cerita 5:</b> 7 − 9 = −2 poin</div>
+</div>
+</section>
+<section class="card" style="text-align:center;background:linear-gradient(120deg,#e9f8ef,#eaf7fb)">
+<h2>🌟 HEBAT!</h2><p>Terus berlatih. Setiap langkah kecil membantumu semakin mahir memahami bilangan bulat.</p>
+</section>
+</main>
+<footer>E-LKPD Bilangan Bulat · Belajar dengan semangat dan percaya diri!</footer>
+<script>
+const questions=[
+{q:"Bilangan bulat negatif adalah bilangan yang …",a:["Lebih besar dari nol","Lebih kecil dari nol","Sama dengan nol","Lebih besar dari 10"],correct:1,why:"Bilangan bulat negatif berada di sebelah kiri nol pada garis bilangan."},
+{q:"Contoh bilangan bulat positif adalah …",a:["−3","−7","5","−10"],correct:2,why:"5 merupakan bilangan bulat positif karena nilainya lebih besar dari nol."},
+{q:"Manakah yang termasuk bilangan bulat?",a:["½","3,5","−4","2,7"],correct:2,why:"−4 adalah bilangan bulat; pecahan dan bilangan desimal bukan bilangan bulat."},
+{q:"Urutan bilangan yang benar dari kecil ke besar adalah …",a:["−5, −3, 0, 2","2, 0, −3, −5","−3, −5, 2, 0","0, −5, −3, 2"],correct:0,why:"Urutan dari kecil ke besar dimulai dari bilangan yang paling negatif."},
+{q:"−7 + (−3) = …",a:["−10","−4","10","4"],correct:0,why:"Menjumlahkan dua bilangan negatif: 7 + 3 = 10, dengan tanda negatif menjadi −10."}
+];
+const stories=[
+"Suatu kota bersuhu −3°C pada pagi hari. Pada siang hari suhu naik 5°C. Berapa suhu sekarang?",
+"Rina memiliki 10 kelereng. Saat bermain, ia kehilangan 4 kelereng. Berapa sisa kelereng Rina?",
+"Seekor ikan berada pada kedalaman −8 meter, lalu berenang naik sejauh 3 meter. Berapa kedalaman ikan sekarang?",
+"Suhu udara malam hari 2°C, kemudian turun sebesar 6°C. Berapa suhu sekarang?",
+"Dani memiliki 7 poin. Karena melakukan kesalahan, ia kehilangan 9 poin. Berapa poin Dani sekarang?"
+];
+const mcq=document.getElementById("mcq");
+questions.forEach((q,i)=>{let d=document.createElement("div");d.className="question";d.innerHTML=`<div class="qtitle">${i+1}. ${q.q}</div><div class="choices">${q.a.map((a,j)=>`<label class="choice" id="choice-${i}-${j}"><input type="radio" name="q${i}" value="${j}" onchange="updateProgress()"> <span><b>${"ABCD"[j]}.</b> ${a}</span></label>`).join("")}</div><div class="feedback" id="feedback-${i}"></div>`;mcq.appendChild(d)});
+const st=document.getElementById("stories");
+stories.forEach((q,i)=>{let d=document.createElement("div");d.className="question";d.innerHTML=`<div class="qtitle">${i+1}. ${q}</div><label class="small muted" for="story${i}">Cara pengerjaan dan jawaban:</label><textarea id="story${i}" placeholder="Tuliskan perhitungan dan jawabanmu..." oninput="updateProgress()"></textarea>`;st.appendChild(d)});
+function updateProgress(){let n=0;questions.forEach((q,i)=>{if(document.querySelector(`input[name="q${i}"]:checked`))n++});stories.forEach((q,i)=>{if(document.getElementById("story"+i).value.trim())n++});document.getElementById("progressText").textContent=`${n} dari 10 dijawab`;document.getElementById("progressBar").style.width=(n*10)+"%"}
+function checkAnswers(){let score=0,answered=0;questions.forEach((q,i)=>{let selected=document.querySelector(`input[name="q${i}"]:checked`);let fb=document.getElementById("feedback-"+i);q.a.forEach((a,j)=>{let el=document.getElementById(`choice-${i}-${j}`);el.classList.remove("correct","wrong");if(j===q.correct)el.classList.add("correct")});if(selected){answered++;if(Number(selected.value)===q.correct){score++;fb.textContent="Benar! "+q.why;fb.style.color="#167d62"}else{document.getElementById(`choice-${i}-${selected.value}`).classList.add("wrong");fb.textContent="Belum tepat. "+q.why;fb.style.color="#b24b3c"}}else{fb.textContent="Belum dijawab. "+q.why;fb.style.color="#8b6b29"}});
+stories.forEach((q,i)=>{if(document.getElementById("story"+i).value.trim())answered++});
+let r=document.getElementById("result");r.style.display="block";r.innerHTML=`<div class="score">${score}/5</div><b>Nilai pilihan ganda: ${score*20}/100</b><p>Kamu sudah mengisi ${answered} dari 10 pertanyaan. ${score===5?"Luar biasa! Semua pilihan gandamu benar.":"Pelajari pembahasan yang ditampilkan, lalu coba lagi."}</p><p class="small">Soal cerita diperiksa secara mandiri dengan membandingkan jawabanmu pada kunci jawaban.</p>`;r.scrollIntoView({behavior:"smooth",block:"nearest"})}
+function toggleKey(){document.getElementById("answerKey").classList.toggle("show")}
+function resetApp(){if(confirm("Hapus semua jawaban dan mulai kembali?")){document.querySelectorAll('input[type="radio"]').forEach(x=>x.checked=false);stories.forEach((q,i)=>document.getElementById("story"+i).value="");document.querySelectorAll(".feedback").forEach(x=>x.textContent="");document.querySelectorAll(".choice").forEach(x=>x.classList.remove("correct","wrong"));document.getElementById("result").style.display="none";document.getElementById("answerKey").classList.remove("show");updateProgress();window.scrollTo({top:0,behavior:"smooth"})}}
+</script>
+</body></html>
